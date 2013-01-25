@@ -6,6 +6,9 @@
 
 QT       += core gui webkit network
 
+DEFINES += MAX_VERSION="1.0"
+DEFINES += MIN_VERSION="0"
+
 TARGET = yapmanager
 TEMPLATE = app
 
