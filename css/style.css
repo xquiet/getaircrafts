@@ -1,0 +1,30 @@
+* {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+h3 {
+	font-family: 'Verdana';
+}
+
+div.aircraft {
+	width: 100%;
+	background-color: #dfdfdf;
+	margin-bottom: 1em;
+}
+
+.thumb {
+	width: 100%;
+	text-align: left;
+}
+.thumb > img {
+	width: 80px;
+	height: 80px;
+	border: none;
+}
+
+.links > a {
+	font-family: 'Arial';
+	font-size: 0.8em;
+}
