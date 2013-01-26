@@ -9,7 +9,7 @@
 }
 
 h3 {
-	font-family: 'Verdana';
+	font-family: "source-code-pro", Consolas, monospace !important;
 }
 
 div.aircraft {
@@ -29,6 +29,6 @@ div.aircraft {
 }
 
 .links > a {
-	font-family: 'Arial';
+	font-family: "source-code-pro", Consolas, monospace !important;
 	font-size: 0.8em;
 }
