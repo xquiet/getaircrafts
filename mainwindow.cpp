@@ -62,6 +62,8 @@ void MainWindow::parse_xml_aircraftlist(QNetworkReply *reply)
     output = getCSS();
     output += getJQuery();
 
+    output += "<h2>Available Aircrafts</h2>";
+
     while(!xml.atEnd())
     {
         xml.readNext();
