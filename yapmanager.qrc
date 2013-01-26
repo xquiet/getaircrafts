@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/html">
         <file>css/style.css</file>
+        <file>js/jquery-1.9.0.min.js</file>
     </qresource>
 </RCC>
