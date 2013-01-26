@@ -1,3 +1,7 @@
+/*
+ * style.css is part of yapmanager
+ * (C) 2013 by Matteo Pasotti <matteo@mageia.it>
+ */
 * {
 	border: 0;
 	margin: 0;
@@ -11,7 +15,7 @@ h3 {
 div.aircraft {
 	width: 100%;
 	background-color: #dfdfdf;
-	margin-bottom: 1em;
+	border-bottom: 1px solid #afafaf;
 }
 
 .thumb {
