@@ -6,11 +6,13 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QXmlStreamReader>
+#include <QCloseEvent>
 #include <QResource>
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
 #include <QTime>
+#include <QMessageBox>
 
 namespace Ui {
 class MainWindow;
@@ -25,6 +27,8 @@ public:
     ~MainWindow();
     
 private slots:
+    void closeEvent(QCloseEvent *event);
+
     void on_pbtRetrieveAircraftList_clicked();
 
     void parse_xml_aircraftlist(QNetworkReply *reply);
@@ -39,6 +43,7 @@ private:
     Ui::MainWindow *ui;
     QString output;
     QString getCSS();
+    QString getJQuery();
     QNetworkReply *currentDownload;
     QTime downloadTime;
 };

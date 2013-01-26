@@ -23,6 +23,18 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if((currentDownload != NULL)&&(!currentDownload->isFinished()))
+    {
+        QMessageBox msgBox(QMessageBox::Warning,tr("Warning"),tr("An ongoing download will be dropped\nAre you sure?"),QMessageBox::Ok|QMessageBox::Cancel);
+        if(msgBox.exec() == QMessageBox::Cancel)
+        {
+            event->ignore();
+        }
+    }
+}
+
 void MainWindow::on_pbtRetrieveAircraftList_clicked()
 {
     QNetworkAccessManager *mgr;
@@ -48,6 +60,8 @@ void MainWindow::parse_xml_aircraftlist(QNetworkReply *reply)
     QString prevKey = "";
     output = "";
     output = getCSS();
+    output += getJQuery();
+
     while(!xml.atEnd())
     {
         xml.readNext();
@@ -77,7 +91,7 @@ void MainWindow::parse_xml_aircraftlist(QNetworkReply *reply)
         }
         else if(xmlName.contains("mirror"))
         {
-            output += "<a href=\"" + xml.readElementText() + "\" title=\""+key+"\">" + xmlName + "</a>&nbsp;";
+            output += "<a href=\"" + xml.readElementText() + "\" title=\""+key+"\">" + xmlName.mid(0,1).toUpper()+xmlName.mid(1,xmlName.length()) + "</a>&nbsp;";
         }
     }
     output += "</div>";
@@ -96,6 +110,15 @@ QString MainWindow::getCSS()
     QString css = QString(ba);
     css = "<style type=\"text/css\">"+css+"</style>";
     return css;
+}
+
+QString MainWindow::getJQuery()
+{
+    QResource r(":/html/js/jquery-1.9.0-min.js");
+    QByteArray ba( reinterpret_cast< const char* >( r.data() ), r.size() );
+    QString jqcode = QString(ba);
+    jqcode = "<script type=\"text/javascript\">"+jqcode+"</script>";
+    return jqcode;
 }
 
 void MainWindow::linkClickedSlot(QUrl url)
