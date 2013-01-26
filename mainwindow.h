@@ -8,6 +8,9 @@
 #include <QXmlStreamReader>
 #include <QResource>
 #include <QFile>
+#include <QFileInfo>
+#include <QDir>
+#include <QTime>
 
 namespace Ui {
 class MainWindow;
@@ -26,12 +29,18 @@ private slots:
 
     void parse_xml_aircraftlist(QNetworkReply *reply);
 
+    void modelDownloaded(QNetworkReply *reply);
+
+    void linkClickedSlot(QUrl url);
+
+    void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+
 private:
     Ui::MainWindow *ui;
-    QNetworkAccessManager *mgr;
-    QNetworkRequest req;
     QString output;
     QString getCSS();
+    QNetworkReply *currentDownload;
+    QTime downloadTime;
 };
 
 #endif // MAINWINDOW_H

@@ -49,6 +49,23 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QLabel" name="lblStatus">
+          <property name="styleSheet">
+           <string notr="true">color: #880000;</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QProgressBar" name="pbarDownload">
+          <property name="value">
+           <number>0</number>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="page_2">
