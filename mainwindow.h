@@ -2,17 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QXmlStreamReader>
 #include <QCloseEvent>
 #include <QResource>
-#include <QFile>
-#include <QFileInfo>
-#include <QDir>
-#include <QTime>
 #include <QMessageBox>
+
+#include "webservice.h"
 
 namespace Ui {
 class MainWindow;
@@ -31,21 +25,20 @@ private slots:
 
     void on_pbtRetrieveAircraftList_clicked();
 
-    void parse_xml_aircraftlist(QNetworkReply *reply);
-
-    void modelDownloaded(QNetworkReply *reply);
-
     void linkClickedSlot(QUrl url);
 
-    void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+    void download_progress(int percent, double speed, QString unit);
+
+    void model_downloaded(QString path);
+
+    void populateWebView(QString html);
 
 private:
     Ui::MainWindow *ui;
     QString output;
     QString getCSS();
     QString getJQuery();
-    QNetworkReply *currentDownload;
-    QTime downloadTime;
+    webservice *ws;
 };
 
 #endif // MAINWINDOW_H
