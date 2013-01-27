@@ -7,8 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // initializing
-    currentDownload = NULL;
+    // initialization
+    ws = new webservice();
 
     // hide progressbar
     ui->pbarDownload->hide();
@@ -25,84 +25,33 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if((currentDownload != NULL)&&(!currentDownload->isFinished()))
+    if(ws)
     {
-        QMessageBox msgBox(QMessageBox::Warning,tr("Warning"),tr("An ongoing download will be dropped\nAre you sure?"),QMessageBox::Ok|QMessageBox::Cancel);
-        if(msgBox.exec() == QMessageBox::Cancel)
+        if((ws->currentDownload != NULL)&&(!ws->currentDownload->isFinished()))
         {
-            event->ignore();
+            QMessageBox msgBox(QMessageBox::Warning,tr("Warning"),tr("An ongoing download will be dropped\nAre you sure?"),QMessageBox::Ok|QMessageBox::Cancel);
+            if(msgBox.exec() == QMessageBox::Cancel)
+            {
+                event->ignore();
+            }
         }
     }
 }
 
 void MainWindow::on_pbtRetrieveAircraftList_clicked()
 {
-    QNetworkAccessManager *mgr;
-    QNetworkRequest req;
-    mgr = new QNetworkAccessManager();
-    //req.setUrl(QUrl("http://yaflight.altervista.org/index.php/fgaircrafts/getcompletelist/"));
-    //req.setUrl(QUrl("http://yaflight.altervista.org/index.php/fgaircrafts/getaircraftlist/"));
-    req.setUrl(QUrl("http://yaflight.altervista.org/index.php/fgaircrafts/getaircrafts/"));
-    req.setRawHeader("User-Agent","Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20100101 Firefox/17.0");
-    //connect(http,SIGNAL(requestFinished(int,bool)),this,SLOT(parse_xml_aircraftlist()));
-    connect(mgr,SIGNAL(finished(QNetworkReply*)),this,SLOT(parse_xml_aircraftlist(QNetworkReply*)));
     ui->lblStatus->setText(tr("Loading aircraft list"));
-    mgr->get(req);
-    ui->webView->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
+    ws->getaircrafts();
+    connect(ws,SIGNAL(signal_aircraftlist_retrieved(QString)),this,SLOT(populateWebView(QString)));
 }
 
-void MainWindow::parse_xml_aircraftlist(QNetworkReply *reply)
+void MainWindow::populateWebView(QString html)
 {
-    QString sDataReturned = QString(reply->readAll()).trimmed().replace("\n","");
-    //qDebug("%s",sDataReturned.toStdString().data());
-    QXmlStreamReader xml(sDataReturned);
-    QString key = "";
-    QString prevKey = "";
-    output = "";
-    output = getCSS();
-    output += getJQuery();
-
-    output += "<h2>Available Aircrafts</h2>";
-
-    while(!xml.atEnd())
-    {
-        xml.readNext();
-        //qDebug("%s",xml.name().toString().toStdString().data());
-        //qDebug("%s",xml.text().toString().toStdString().data());
-        QString xmlName = xml.name().toString();
-        if((xmlName.compare("aircraft")==0)||
-                xmlName.compare("aircraft")==0)
-        {
-            // do nothing
-        }
-        if(xmlName.compare("title")==0)
-        {
-            key = xml.readElementText();
-            if(key.compare(prevKey)!=0)
-            {
-                output += "</div> <!-- links -->";
-                output += "</div>";
-                prevKey = key;
-            }
-            output += "<div class=\"aircraft\"><h3>" + key + "</h3>";
-        }
-        else if(xmlName.compare("image")==0)
-        {
-            output += "<div class=\"thumb\"><img src=\"" + xml.readElementText() + "\" alt=\""+ key + "\" /></div>";
-            output += "<div class=\"links\">";
-        }
-        else if(xmlName.contains("mirror"))
-        {
-            output += "<a href=\"" + xml.readElementText() + "\" title=\""+key+"\">" + xmlName.mid(0,1).toUpper()+xmlName.mid(1,xmlName.length()) + "</a>&nbsp;";
-        }
-    }
-    output += "</div>";
-    if(xml.hasError())
-    {
-        qDebug("ERROR: %s",xml.errorString().toStdString().data());
-    }
-    ui->webView->setHtml(output);
+    html = getJQuery() + html;
+    html = getCSS() + html;
+    ui->webView->setHtml(html);
     ui->lblStatus->setText(tr("Done"));
+    ui->webView->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
 }
 
 QString MainWindow::getCSS()
@@ -128,76 +77,32 @@ void MainWindow::linkClickedSlot(QUrl url)
     qDebug("%s",url.toString().toStdString().data());
     if(url.toString().trimmed().compare("")==0)
         return;
-    QNetworkAccessManager *mgr = new QNetworkAccessManager();
-    QNetworkRequest req;
-    req.setUrl(url);
-    req.setRawHeader("User-Agent","Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20100101 Firefox/17.0");
-    connect(mgr,SIGNAL(finished(QNetworkReply*)),this,SLOT(modelDownloaded(QNetworkReply*)));
     ui->lblStatus->setText(tr("Downloading model..."));
-    currentDownload = mgr->get(req);
-    downloadTime.start();
-    connect(currentDownload,SIGNAL(downloadProgress(qint64,qint64)),this,SLOT(downloadProgress(qint64,qint64)));
+    connect(ws,SIGNAL(signal_model_downloaded(QString)),this,SLOT(model_downloaded(QString)));
+    ws->downloadModel(url);
+    connect(ws,SIGNAL(signal_download_progress(int, double, QString)),this,SLOT(download_progress(int, double, QString)));
+
 }
 
-void MainWindow::modelDownloaded(QNetworkReply *reply)
+void MainWindow::model_downloaded(QString path)
 {
-    if(!currentDownload->error())
-    {
-        qDebug("Download Succeded");
-    }
-    else
-    {
-        qFatal("Download Failed");
-        return;
-    }
-    QByteArray ba = reply->readAll();
-    QString tempFile = QDir::tempPath()+QDir::separator()+QFileInfo(reply->url().path()).fileName();
-    QFile destFile(tempFile);
-    if(!destFile.open(QIODevice::WriteOnly))
-    {
-        qWarning("%s",destFile.errorString().toStdString().data());
-        return;
-    }
-    destFile.write(ba);
-    destFile.close();
+    QMessageBox msgBox(QMessageBox::Information,"Model stored",path,QMessageBox::Ok);
+    msgBox.exec();
     ui->lblStatus->setText(tr("Model downloaded"));
     ui->pbarDownload->setValue(0);
     ui->pbarDownload->hide();
 }
 
-void MainWindow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
+void MainWindow::download_progress(int percent, double speed, QString unit)
 {
     if(ui->pbarDownload->isHidden())
         ui->pbarDownload->setHidden(false);
-    int percent = bytesReceived * 100 / bytesTotal;
+
     ui->pbarDownload->setValue(percent);
 
-    // calculate the download speed
-    double speed = bytesReceived * 1000.0 / downloadTime.elapsed();
-    QString unit;
-    if (speed < 1024) {
-        unit = "bytes/sec";
-    } else if (speed < 1024*1024) {
-        speed /= 1024;
-        unit = "kB/s";
-    } else {
-        speed /= 1024*1024;
-        unit = "MB/s";
-    }
     ui->lblStatus->setText(QString::fromLatin1("%1 %2")
                         .arg(speed, 3, 'f', 1).arg(unit));
 
     ui->pbarDownload->update();
     ui->lblStatus->update();
 }
-
-/*void MainWindow::parse_xml_aircraftlist(QNetworkReply *reply)
-{
-    QString sDataReturned = QString(reply->readAll());
-    //qDebug("%s",sDataReturned.toStdString().data());
-    QStringList aircrafts = sDataReturned.split("\n",QString::SkipEmptyParts);
-    foreach(QString aircraft, aircrafts)
-    {
-        qDebug("%s\n",aircraft.toStdString().data());
-    }
-}*/
