@@ -11,7 +11,10 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>YaPManager</string>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -26,7 +29,7 @@
          <x>0</x>
          <y>0</y>
          <width>407</width>
-         <height>367</height>
+         <height>395</height>
         </rect>
        </property>
        <attribute name="label">
@@ -91,19 +94,6 @@
          </widget>
         </item>
        </layout>
-      </widget>
-      <widget class="QWidget" name="page_2">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>407</width>
-         <height>367</height>
-        </rect>
-       </property>
-       <attribute name="label">
-        <string>Page 2</string>
-       </attribute>
       </widget>
      </widget>
     </item>
