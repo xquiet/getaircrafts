@@ -10,10 +10,18 @@ MainWindow::MainWindow(QWidget *parent) :
     // initialization
     ws = new webservice();
 
+    ui->cbofgversion->addItems(QStringList()
+                               << "v2.4"
+                               << "v2.6"
+                               << "v2.8"
+                               );
+
     // hide progressbar
     ui->pbarDownload->hide();
 
     connect(ui->actionExit,SIGNAL(triggered()),this,SLOT(close()));
+    connect(ui->actionAbout,SIGNAL(triggered()),this,SLOT(about()));
+    connect(ui->actionAbout_Qt,SIGNAL(triggered()),this,SLOT(aboutQt()));
     connect(ui->webView->page(),SIGNAL(linkClicked(QUrl)),
                       this,SLOT(linkClickedSlot(QUrl)));
 }
@@ -47,8 +55,14 @@ void MainWindow::on_pbtRetrieveAircraftList_clicked()
 
 void MainWindow::populateWebView(QString html)
 {
-    html = getJQuery() + html;
+    html = "</head><body>" + html;
+    html = getJSFunctions() + html; // last inserted, my own functions
+    html = "<script src=\"http://code.jquery.com/ui/1.10.0/jquery-ui.js\"></script>" + html; // inserted AFTER jquery cause it requires jquery
+    html = "<script src=\"http://code.jquery.com/jquery-1.9.0.js\"></script>" + html;
+    html = "<link rel=\"stylesheet\" href=\"http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css\" />" + html;
     html = getCSS() + html;
+    html = "<html><head>" + html + "</body></html>";
+    //qDebug("%s",html.toStdString().data());
     ui->webView->setHtml(html);
     ui->lblStatus->setText(tr("Done"));
     ui->webView->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
@@ -69,7 +83,27 @@ QString MainWindow::getJQuery()
     QByteArray ba( reinterpret_cast< const char* >( r.data() ), r.size() );
     QString jqcode = QString(ba);
     jqcode = "<script type=\"text/javascript\">"+jqcode+"</script>";
+    qDebug("%s",jqcode.toStdString().data());
     return jqcode;
+}
+
+QString MainWindow::getJQueryUI()
+{
+    QResource r(":/html/js/jquery-ui-1.10.0.custom.min.js");
+    QByteArray ba( reinterpret_cast< const char* >( r.data() ), r.size() );
+    QString jquicode = QString(ba);
+    jquicode = "<script type=\"text/javascript\">"+jquicode+"</script>";
+    qDebug("%s",jquicode.toStdString().data());
+    return jquicode;
+}
+
+QString MainWindow::getJSFunctions()
+{
+    QResource r(":/html/js/functions.js");
+    QByteArray ba( reinterpret_cast< const char* >( r.data() ), r.size() );
+    QString code = QString(ba);
+    code = "<script type=\"text/javascript\">"+code+"</script>";
+    return code;
 }
 
 void MainWindow::linkClickedSlot(QUrl url)
@@ -105,4 +139,19 @@ void MainWindow::download_progress(int percent, double speed, QString unit)
 
     ui->pbarDownload->update();
     ui->lblStatus->update();
+}
+
+void MainWindow::about()
+{
+    QMessageBox msgBox(QMessageBox::Information,
+                       tr("YaPManager"),
+                       tr("Yet another Package Manager for FlightGear\n(C) 2013 by Matteo Pasotti <matteo@xquiet.eu>"),
+                       QMessageBox::Ok);
+    msgBox.exec();
+}
+
+void MainWindow::aboutQt()
+{
+    QMessageBox msgBox(this);
+    msgBox.aboutQt(this, "About Qt");
 }

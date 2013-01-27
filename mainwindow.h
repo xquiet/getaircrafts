@@ -33,11 +33,17 @@ private slots:
 
     void populateWebView(QString html);
 
+    void about();
+
+    void aboutQt();
+
 private:
     Ui::MainWindow *ui;
     QString output;
     QString getCSS();
     QString getJQuery();
+    QString getJQueryUI();
+    QString getJSFunctions();
     webservice *ws;
 };
 
