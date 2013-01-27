@@ -11,9 +11,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ws = new webservice();
 
     ui->cbofgversion->addItems(QStringList()
-                               << "v2.4"
-                               << "v2.6"
                                << "v2.8"
+                               << "v2.6"
+//                               << "v2.4"
                                );
 
     // hide progressbar
@@ -49,7 +49,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::on_pbtRetrieveAircraftList_clicked()
 {
     ui->lblStatus->setText(tr("Loading aircraft list"));
-    ws->getaircrafts();
+    ws->getaircrafts(ui->cbofgversion->currentText());
     connect(ws,SIGNAL(signal_aircraftlist_retrieved(QString)),this,SLOT(populateWebView(QString)));
 }
 

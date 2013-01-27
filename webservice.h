@@ -31,7 +31,7 @@ signals:
 
 public:
     webservice();
-    void getaircrafts();
+    void getaircrafts(QString version);
     void downloadModel(QUrl url);
     QNetworkReply *currentDownload;
 };

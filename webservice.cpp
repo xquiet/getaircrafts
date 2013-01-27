@@ -8,12 +8,12 @@ webservice::webservice()
     currentDownload = NULL;
 }
 
-void webservice::getaircrafts()
+void webservice::getaircrafts(QString version)
 {
     QNetworkAccessManager *mgr;
     QNetworkRequest req;
     mgr = new QNetworkAccessManager();
-    req.setUrl(QUrl(hostRef+"/index.php/fgaircrafts/getaircrafts/"));
+    req.setUrl(QUrl(hostRef+"/index.php/fgaircrafts/getaircrafts/?version="+version.replace(".","_")));
     req.setRawHeader("User-Agent",userAgent.toStdString().data());
     connect(mgr,SIGNAL(finished(QNetworkReply*)),this,SLOT(parse_xml_aircraftlist(QNetworkReply*)));
     mgr->get(req);
@@ -112,6 +112,20 @@ void webservice::parse_xml_aircraftlist(QNetworkReply *reply)
             output += "<a href=\"" + xml.readElementText() + "\" title=\""+key+"\">" + xmlName.mid(0,1).toUpper()+xmlName.mid(1,xmlName.length()) + "</a>&nbsp;";
         }
     }
+    output += "</div> <!-- links -->";
+    output += "</div><!-- end details -->";
+    output += "<div style=\"clear: both;\"></div>";
+    output += "<input type=\"button\" onclick=\"showDialog("+QString::number(idDiag)+")\" value=\"Details\" />";
+    output += "<div id=\"detailsdiag"+QString::number(idDiag)+"\" title=\""+prevKey+"\" class=\"mydialog\">";
+    idDiag++;
+    output += "<div class=\"thumb\"><img src=\""+image+"\" alt=\""+key+"\" /></div>";
+    output += "<div class=\"details\">";
+    output += "<div><b>Authors:</b>&nbsp;&nbsp;"+authors+"</div>";
+    output += "<div><b>Version:</b>&nbsp;&nbsp;"+version+"</div>";
+    output += "<div><b>Description:</b><br />"+description+"</div>";
+    output += "<div style=\"clear: both;\"></div>";
+    output += "</div><!-- end details into dialog -->";
+    output += "</div><!-- end dialog -->";
     output += "</div><!-- end aircraft last -->";
     if(xml.hasError())
     {
@@ -173,5 +187,5 @@ void webservice::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
         unit = "MB/s";
     }
 
-    emit signal_download_progress(percent, speed, unit + currentDownload->url().toString());
+    emit signal_download_progress(percent, speed, unit + "\t" + currentDownload->url().toString());
 }
