@@ -12,13 +12,16 @@ DEFINES += MIN_VERSION="0"
 TARGET = yapmanager
 TEMPLATE = app
 
+LIBS += -lzip -lz
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    webservice.cpp
+    webservice.cpp \
+    Installer.cpp
 
 HEADERS  += mainwindow.h \
-    webservice.h
+    webservice.h \
+    Installer.h
 
 FORMS    += mainwindow.ui
 
