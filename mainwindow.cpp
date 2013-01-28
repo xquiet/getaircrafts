@@ -120,8 +120,10 @@ void MainWindow::linkClickedSlot(QUrl url)
 
 void MainWindow::model_downloaded(QString path)
 {
-    QMessageBox msgBox(QMessageBox::Information,"Model stored",path,QMessageBox::Ok);
-    msgBox.exec();
+    //QMessageBox msgBox(QMessageBox::Information,"Model stored",path,QMessageBox::Ok);
+    //msgBox.exec();
+    Installer *install = new Installer("/usr/share/games/flightgear/Aircraft/",path);
+    install->extract();
     ui->lblStatus->setText(tr("Model downloaded"));
     ui->pbarDownload->setValue(0);
     ui->pbarDownload->hide();

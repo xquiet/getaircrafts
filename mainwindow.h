@@ -7,6 +7,7 @@
 #include <QMessageBox>
 
 #include "webservice.h"
+#include "Installer.h"
 
 namespace Ui {
 class MainWindow;
