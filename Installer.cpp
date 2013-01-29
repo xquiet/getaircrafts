@@ -36,7 +36,7 @@ bool Installer::extract()
         zip_error_to_str(buf, sizeof(buf), err, errno);
         qDebug("Extractor: can't open zip archive `%s': %s/n",
             archive, buf);
-        return 1;
+        return false;
     }
 
     for (i = 0; i < zip_get_num_entries(za, 0); i++) {
@@ -90,10 +90,10 @@ bool Installer::extract()
 
     if (zip_close(za) == -1) {
         fprintf(stderr, "Extractor: can't close zip archive `%s'/n", archive);
-        return 1;
+        return false;
     }
 
-    return 0;
+    return true;
 }
 
 /*
