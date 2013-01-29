@@ -125,7 +125,9 @@ void MainWindow::model_downloaded(QString path)
     Installer *install = new Installer("/usr/share/games/flightgear/Aircraft/",path);
     if(install->extract())
     {
-        ui->lblStatus->setText(tr("Model downloaded"));
+        ui->lblStatus->setText(tr("Model downloaded and installed successfully"));
+        QMessageBox msgBox(QMessageBox::Information,tr("Done"),tr("Model downloaded and installed successfully\nRestart YaFlight to reload the aircraft list"),QMessageBox::Ok);
+        msgBox.exec();
     }
     else
     {
