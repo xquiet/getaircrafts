@@ -123,8 +123,16 @@ void MainWindow::model_downloaded(QString path)
     //QMessageBox msgBox(QMessageBox::Information,"Model stored",path,QMessageBox::Ok);
     //msgBox.exec();
     Installer *install = new Installer("/usr/share/games/flightgear/Aircraft/",path);
-    install->extract();
-    ui->lblStatus->setText(tr("Model downloaded"));
+    if(install->extract())
+    {
+        ui->lblStatus->setText(tr("Model downloaded"));
+    }
+    else
+    {
+        ui->lblStatus->setText(tr("Model downloaded but not installed"));
+        QMessageBox msgBox(QMessageBox::Critical,tr("Error"),tr("Model downloaded but not installed\nVerify your permissions for the Aircrafts directory"),QMessageBox::Ok);
+        msgBox.exec();
+    }
     ui->pbarDownload->setValue(0);
     ui->pbarDownload->hide();
 }

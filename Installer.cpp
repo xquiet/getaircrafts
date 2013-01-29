@@ -6,13 +6,14 @@ Installer::Installer(QString destpath, QString zipped)
     destinationPath = destpath.trimmed();
 }
 
-bool safe_create_dir(const char *dir)
+bool safe_create_dir(QString dir)
 {
     QDir qdir;
     if(!qdir.mkdir(dir))
     {
         if (errno != EEXIST) {
-            perror(dir);
+            qDebug("Error creating dir %s",dir.toStdString().data());
+            perror(dir.toStdString().data());
             return false;
         }
     }
@@ -43,24 +44,25 @@ bool Installer::extract()
             qDebug("==================/n");
             len = strlen(sb.name);
             qDebug("Name: [%s], ", sb.name);
-            qDebug("Size: [%lui], ", sb.size);
+            qDebug("Size: [%lu], ", sb.size);
             qDebug("mtime: [%u]/n", (unsigned int)sb.mtime);
+            if(destinationPath.trimmed().compare("")!=0)
+            {
+                fname = destinationPath + QDir::separator() + sb.name;
+            }
+            else
+            {
+                fname = sb.name;
+            }
             if (sb.name[len - 1] == '/') {
-                safe_create_dir(sb.name);
+                if(!safe_create_dir(fname))
+                    return false;
             } else {
                 zf = zip_fopen_index(za, i, 0);
                 if (!zf) {
                     qDebug("boese, boese/n");
                     return false;
-                }
-                if(destinationPath.trimmed().compare("")!=0)
-                {
-                    fname = destinationPath + QDir::separator() + sb.name;
-                }
-                else
-                {
-                    fname = sb.name;
-                }
+                }   
                 QFile file(fname);
                 if(!file.open(QFile::ReadWrite|QFile::Truncate))
                 {
