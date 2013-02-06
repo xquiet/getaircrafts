@@ -22,6 +22,11 @@ div.aircraft {
 	width: 100%;
 }
 
+div.installed,
+div.installed:hover {
+	background-color: #c90000 !important;
+}
+
 div.aircraft:hover {
 	background-color: #ccffff;
 }
