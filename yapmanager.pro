@@ -17,11 +17,13 @@ LIBS += -lzip -lz
 SOURCES += main.cpp\
         mainwindow.cpp \
     webservice.cpp \
-    Installer.cpp
+    Installer.cpp \
+    xml2html.cpp
 
 HEADERS  += mainwindow.h \
     webservice.h \
-    Installer.h
+    Installer.h \
+    xml2html.h
 
 FORMS    += mainwindow.ui
 

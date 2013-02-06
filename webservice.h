@@ -4,7 +4,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#include <QXmlStreamReader>
+//#include <QXmlStreamReader>
 #include <QTime>
 #include <QFile>
 #include <QFileInfo>
@@ -20,7 +20,7 @@ private:
     QTime downloadTime;
 
 private slots:
-    void parse_xml_aircraftlist(QNetworkReply *reply);
+    void retrieve_aircraftlist_xml(QNetworkReply *reply);
     void modelDownloaded(QNetworkReply *reply);
     void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 
