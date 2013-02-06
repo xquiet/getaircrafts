@@ -7,6 +7,7 @@
 #include <QMessageBox>
 
 #include "webservice.h"
+#include "xml2html.h"
 #include "Installer.h"
 
 namespace Ui {
@@ -32,7 +33,7 @@ private slots:
 
     void model_downloaded(QString path);
 
-    void populateWebView(QString html);
+    void populateWebView(QString xml);
 
     void about();
 
@@ -45,6 +46,7 @@ private:
     QString getJQuery();
     QString getJQueryUI();
     QString getJSFunctions();
+    QStringList getAircraftList(QString path);
     webservice *ws;
 };
 

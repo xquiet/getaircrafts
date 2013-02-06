@@ -53,8 +53,12 @@ void MainWindow::on_pbtRetrieveAircraftList_clicked()
     connect(ws,SIGNAL(signal_aircraftlist_retrieved(QString)),this,SLOT(populateWebView(QString)));
 }
 
-void MainWindow::populateWebView(QString html)
+void MainWindow::populateWebView(QString xml)
 {
+    QString html = "";
+    xml2html *x2h = new xml2html();
+    QStringList aircraftList = getAircraftList("/usr/share/games/flightgear/Aircraft");
+    html = x2h->aircraftList(xml,aircraftList);
     html = "</head><body>" + html;
     html = getJSFunctions() + html; // last inserted, my own functions
     html = "<script src=\"http://code.jquery.com/ui/1.10.0/jquery-ui.js\"></script>" + html; // inserted AFTER jquery cause it requires jquery
@@ -166,4 +170,15 @@ void MainWindow::aboutQt()
 {
     QMessageBox msgBox(this);
     msgBox.aboutQt(this, "About Qt");
+}
+
+QStringList MainWindow::getAircraftList(QString path)
+{
+    QDir aircraftsDir(path);
+    if(!aircraftsDir.exists())
+    {
+        qDebug("Directory %s doesn't exists",aircraftsDir.absolutePath().toStdString().data());
+        return QStringList();
+    }
+    return aircraftsDir.entryList(QDir::Dirs,QDir::Name);
 }
