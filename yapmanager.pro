@@ -12,7 +12,13 @@ DEFINES += MIN_VERSION="0"
 TARGET = yapmanager
 TEMPLATE = app
 
-LIBS += -lzip -lz
+unix:!macx {
+    LIBS += -lzip -lz
+}
+macx {
+    INCLUDEPATH += /opt/local/include /opt/local/lib/libzip/include
+    LIBS += -L/opt/local/lib -lzip -lz
+}
 
 SOURCES += main.cpp\
         mainwindow.cpp \
