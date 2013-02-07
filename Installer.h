@@ -29,7 +29,9 @@ class Installer
 {
 public:
     Installer(QString destpath, QString zipped);
+    Installer(QString destpath);
     bool extract();
+    bool uninstall(QString model);
 
 private:
     const char *archive;

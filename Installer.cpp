@@ -6,6 +6,30 @@ Installer::Installer(QString destpath, QString zipped)
     destinationPath = destpath.trimmed();
 }
 
+Installer::Installer(QString destpath)
+{
+    destinationPath = destpath.trimmed();
+}
+
+bool Installer::uninstall(QString model)
+{
+    QDir dir(destinationPath+model);
+    if(dir.exists())
+    {
+        qDebug("dir to del: %s", (dir.absolutePath()).toStdString().data());
+        if(dir.rmpath(dir.absolutePath()))
+        {
+            return true;
+        }
+    }
+    else
+    {
+        qDebug("The directory %s do not exists or you require more privileges\nTry running yaai as administrator",
+               QString(destinationPath+model).toStdString().data());
+    }
+    return false;
+}
+
 bool safe_create_dir(QString dir)
 {
     QDir qdir;
