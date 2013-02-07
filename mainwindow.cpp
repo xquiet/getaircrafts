@@ -57,7 +57,7 @@ void MainWindow::populateWebView(QString xml)
 {
     QString html = "";
     xml2html *x2h = new xml2html();
-    QStringList aircraftList = getAircraftList("/usr/share/games/flightgear/Aircraft");
+    QStringList aircraftList = getAircraftList(ui->lnedtAircraftDir->text().trimmed());
     html = x2h->aircraftList(xml,aircraftList);
     html = "</head><body>" + html;
     html = getJSFunctions() + html; // last inserted, my own functions
@@ -115,7 +115,7 @@ void MainWindow::linkClickedSlot(QUrl url)
     qDebug("%s",url.toString().toStdString().data());
     if(url.toString().trimmed().compare("")==0)
         return;
-    QRegExp regexp("/^http|^ftp|^https/");
+    QRegExp regexp("/^http|ftp|https/");
     if(!url.toString().contains(regexp))
     {
         if(url.toString().trimmed().contains("remove#"))
@@ -197,4 +197,13 @@ QStringList MainWindow::getAircraftList(QString path)
         return QStringList();
     }
     return aircraftsDir.entryList(QDir::Dirs,QDir::Name);
+}
+
+void MainWindow::on_pbtBrowse_clicked()
+{
+    QString aircraftDirPath = QFileDialog::getExistingDirectory(this,
+                                                                 tr("Choose the aircraft directory where you want to store the downloaded models"),
+                                                                 QDir::homePath(),
+                                                                 QFileDialog::ShowDirsOnly);
+    ui->lnedtAircraftDir->setText(aircraftDirPath);
 }

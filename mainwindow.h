@@ -24,6 +24,7 @@
 #include <QCloseEvent>
 #include <QResource>
 #include <QMessageBox>
+#include <QFileDialog>
 
 #include "webservice.h"
 #include "xml2html.h"
@@ -57,6 +58,8 @@ private slots:
     void about();
 
     void aboutQt();
+
+    void on_pbtBrowse_clicked();
 
 private:
     Ui::MainWindow *ui;
