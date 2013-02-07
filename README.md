@@ -1,6 +1,5 @@
-yapmanager
+YaAI
 ==========
 
-Yet Another Package Manager for FlightGear.
+Yet Another Aircraft Installer for FlightGear and YaFlight.
 
-yapmanager is part of yaflight.
