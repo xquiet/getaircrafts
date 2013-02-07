@@ -9,7 +9,7 @@ QT       += core gui webkit network
 DEFINES += MAX_VERSION="1.0"
 DEFINES += MIN_VERSION="0"
 
-TARGET = yapmanager
+TARGET = yaai
 TEMPLATE = app
 
 unix:!macx {
@@ -34,4 +34,4 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui
 
 RESOURCES += \
-    yapmanager.qrc
+    yaai.qrc

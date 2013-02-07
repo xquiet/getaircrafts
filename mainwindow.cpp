@@ -160,8 +160,8 @@ void MainWindow::download_progress(int percent, double speed, QString unit)
 void MainWindow::about()
 {
     QMessageBox msgBox(QMessageBox::Information,
-                       tr("YaPManager"),
-                       tr("Yet another Package Manager for FlightGear\n(C) 2013 by Matteo Pasotti <matteo@xquiet.eu>"),
+                       tr("YaAI"),
+                       tr("Yet Another Aircraft Installer for FlightGear\n(C) 2013 by Matteo Pasotti <matteo@xquiet.eu>"),
                        QMessageBox::Ok);
     msgBox.exec();
 }
