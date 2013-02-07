@@ -115,10 +115,26 @@ void MainWindow::linkClickedSlot(QUrl url)
     qDebug("%s",url.toString().toStdString().data());
     if(url.toString().trimmed().compare("")==0)
         return;
-    ui->lblStatus->setText(tr("Downloading model..."));
-    connect(ws,SIGNAL(signal_model_downloaded(QString)),this,SLOT(model_downloaded(QString)));
-    ws->downloadModel(url);
-    connect(ws,SIGNAL(signal_download_progress(int, double, QString)),this,SLOT(download_progress(int, double, QString)));
+    QRegExp regexp("/^http|^ftp|^https/");
+    if(!url.toString().contains(regexp))
+    {
+        if(url.toString().trimmed().contains("remove#"))
+        {
+            Installer *uninstall = new Installer("/usr/share/games/flightgear/Aircraft/");
+            if(uninstall->uninstall(url.toString().mid(url.toString().indexOf('#')+1)))
+            {
+                // reload aircraft list
+                on_pbtRetrieveAircraftList_clicked();
+            }
+        }
+    }
+    else
+    {
+        ui->lblStatus->setText(tr("Downloading model..."));
+        connect(ws,SIGNAL(signal_model_downloaded(QString)),this,SLOT(model_downloaded(QString)));
+        ws->downloadModel(url);
+        connect(ws,SIGNAL(signal_download_progress(int, double, QString)),this,SLOT(download_progress(int, double, QString)));
+    }
 
 }
 

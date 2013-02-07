@@ -14,6 +14,7 @@ QString xml2html::aircraftList(QString data, QStringList filter)
     QString description = "";
     QString version = "";
     QString image = "";
+    bool installed = false;
     int idDiag = 0;
     //output += "<h2>Available Aircrafts</h2>";
 
@@ -39,9 +40,11 @@ QString xml2html::aircraftList(QString data, QStringList filter)
                     output += "</div><!-- end details -->";
                     output += "<div style=\"clear: both;\"></div>";
                     output += "<input type=\"button\" onclick=\"showDialog("+QString::number(idDiag)+")\" value=\"Details\" />";
+                    if(installed != false)
+                        output += "<a href=\"remove#"+prevKey+"\" alt=\"Uninstall\">Uninstall aircraft model</a>";
                     output += "<div id=\"detailsdiag"+QString::number(idDiag)+"\" title=\""+prevKey+"\" class=\"mydialog\">";
                     idDiag++;
-                    output += "<div class=\"thumb\"><img src=\""+image+"\" alt=\""+key+"\" /></div>";
+                    output += "<div class=\"thumb\"><img src=\""+image+"\" alt=\""+prevKey+"\" /></div>";
                     output += "<div class=\"details\">";
                     output += "<div><b>Authors:</b>&nbsp;&nbsp;"+authors+"</div>";
                     output += "<div><b>Version:</b>&nbsp;&nbsp;"+version+"</div>";
@@ -59,10 +62,12 @@ QString xml2html::aircraftList(QString data, QStringList filter)
             if(filter.contains(key,Qt::CaseSensitive))
             {
                 output += "<div class=\"aircraft installed\"><h3>" + key + "</h3>";
+                installed = true;
             }
             else
             {
                 output += "<div class=\"aircraft\"><h3>" + key + "</h3>";
+                installed = false;
             }
         }
         else if(xmlName.compare("image")==0)
@@ -99,7 +104,8 @@ QString xml2html::aircraftList(QString data, QStringList filter)
         }
         else if(xmlName.contains("mirror"))
         {
-            output += "<a href=\"" + xml.readElementText() + "\" title=\""+key+"\">" + xmlName.mid(0,1).toUpper()+xmlName.mid(1,xmlName.length()) + "</a>&nbsp;";
+            if(installed != true)
+                output += "<a href=\"" + xml.readElementText() + "\" title=\""+key+"\">" + xmlName.mid(0,1).toUpper()+xmlName.mid(1,xmlName.length()) + "</a>&nbsp;";
         }
     }
     output += "</div> <!-- links -->";
