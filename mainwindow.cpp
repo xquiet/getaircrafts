@@ -24,6 +24,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionAbout_Qt,SIGNAL(triggered()),this,SLOT(aboutQt()));
     connect(ui->webView->page(),SIGNAL(linkClicked(QUrl)),
                       this,SLOT(linkClickedSlot(QUrl)));
+    ya = new Yalib();
+    ya->initialize();
+    fg_detected_version = ya->detectFGVersion();
+    fg_detected_version = fg_detected_version.mid(0, fg_detected_version.lastIndexOf('.'));
+    ui->cbofgversion->setCurrentIndex(ui->cbofgversion->findText("v"+fg_detected_version));
 }
 
 MainWindow::~MainWindow()

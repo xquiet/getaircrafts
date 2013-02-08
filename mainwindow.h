@@ -29,6 +29,7 @@
 #include "webservice.h"
 #include "xml2html.h"
 #include "Installer.h"
+#include "yalib.h"
 
 namespace Ui {
 class MainWindow;
@@ -70,6 +71,8 @@ private:
     QString getJSFunctions();
     QStringList getAircraftList(QString path);
     webservice *ws;
+    Yalib *ya;
+    QString fg_detected_version;
 };
 
 #endif // MAINWINDOW_H
