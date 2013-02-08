@@ -26,9 +26,14 @@ MainWindow::MainWindow(QWidget *parent) :
                       this,SLOT(linkClickedSlot(QUrl)));
     ya = new Yalib();
     ya->initialize();
-    fg_detected_version = ya->detectFGVersion();
+    fg_detected_version = ya->getFGVersion();
     fg_detected_version = fg_detected_version.mid(0, fg_detected_version.lastIndexOf('.'));
-    ui->cbofgversion->setCurrentIndex(ui->cbofgversion->findText("v"+fg_detected_version));
+    int index = ui->cbofgversion->findText("v"+fg_detected_version);
+    if(index<0)
+        index = 0;
+    ui->cbofgversion->setCurrentIndex(index);
+
+    ui->lnedtAircraftDir->setText(ya->getAircraftsDir());
 }
 
 MainWindow::~MainWindow()

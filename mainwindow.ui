@@ -42,7 +42,7 @@
           <item>
            <widget class="QLineEdit" name="lnedtAircraftDir">
             <property name="text">
-             <string>/usr/share/games/flightgear/Aircraft</string>
+             <string/>
             </property>
            </widget>
           </item>
