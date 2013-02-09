@@ -29,7 +29,7 @@
 #include "webservice.h"
 #include "xml2html.h"
 #include "Installer.h"
-#include "yalib.h"
+#include "yalib/yalib.h"
 
 namespace Ui {
 class MainWindow;

@@ -36,11 +36,13 @@ FORMS    += mainwindow.ui
 RESOURCES += \
     yainstall.qrc
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../yalib/release/ -lyalib
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../yalib/debug/ -lyalib
-else:mac: LIBS += -F$$PWD/../yalib/ -framework yalib
-else:symbian: LIBS += -lyalib
-else:unix: LIBS += -L$$PWD/../yalib/ -lyalib
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../yalib/release/ -lyalib
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../yalib/debug/ -lyalib
+#else:mac: LIBS += -F$$PWD/../yalib/ -framework yalib
+#else:symbian: LIBS += -lyalib
+#else:unix: LIBS += -L$$PWD/../yalib/ -lyalib
 
-INCLUDEPATH += $$PWD/../yalib
-DEPENDPATH += $$PWD/../yalib
+#INCLUDEPATH += $$PWD/../yalib
+#DEPENDPATH += $$PWD/../yalib
+
+unix: LIBS += -L/usr/include/yalib/ -lyalib
