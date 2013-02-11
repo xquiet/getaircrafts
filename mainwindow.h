@@ -29,7 +29,11 @@
 #include "webservice.h"
 #include "xml2html.h"
 #include "Installer.h"
+#ifdef Q_OS_MACX
+#include "yalib.h"
+#else
 #include "yalib/yalib.h"
+#endif
 
 namespace Ui {
 class MainWindow;
