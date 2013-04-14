@@ -80,6 +80,7 @@ void MainWindow::populateWebView(QString xml)
     ui->webView->setHtml(html);
     ui->lblStatus->setText(tr("Done"));
     ui->webView->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
+    delete x2h;
 }
 
 QString MainWindow::getCSS()
