@@ -14,6 +14,7 @@ TEMPLATE = app
 
 unix:!macx {
     LIBS += -lzip -lz
+    target.path = /usr/bin
 }
 macx {
     INCLUDEPATH += /opt/local/include /opt/local/lib/libzip/include
