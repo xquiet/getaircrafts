@@ -20,6 +20,15 @@ macx {
     LIBS += -L/opt/local/lib -lzip -lz
 }
 
+# for development environment
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../yalib/release/ -lyalib
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../yalib/debug/ -lyalib
+else:mac: LIBS += -F$$PWD/../yalib/ -framework yalib
+else:unix: LIBS += -L$$PWD/../yalib/ -lyalib
+
+INCLUDEPATH += $$PWD/../yalib
+DEPENDPATH += $$PWD/../yalib
+
 SOURCES += main.cpp\
         mainwindow.cpp \
     webservice.cpp \
@@ -36,11 +45,4 @@ FORMS    += mainwindow.ui
 RESOURCES += \
     yainstall.qrc
 
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../yalib/release/ -lyalib
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../yalib/debug/ -lyalib
-else:mac: LIBS += -F$$PWD/../yalib/ -framework yalib
-else:unix: LIBS += -L$$PWD/../yalib/ -lyalib
-
-INCLUDEPATH += $$PWD/../yalib
-DEPENDPATH += $$PWD/../yalib
+INSTALLS += target
