@@ -11,9 +11,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ws = new webservice();
 
     ui->cbofgversion->addItems(QStringList()
+                               << "v2.10"
                                << "v2.8"
                                << "v2.6"
-//                               << "v2.4"
+                               << "v2.4"
                                );
 
     // hide progressbar
