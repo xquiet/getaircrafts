@@ -6,7 +6,7 @@
 
 QT       += core gui webkit network
 
-DEFINES += MAX_VERSION="1.0"
+DEFINES += MAX_VERSION="1.1"
 DEFINES += MIN_VERSION="0"
 
 TARGET = yainstall
