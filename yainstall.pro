@@ -8,7 +8,7 @@ QT       += core gui network
 lessThan(QT_MAJOR_VERSION, 5): QT += webkit
 greaterThan(QT_MAJOR_VERSION, 4): QT += webkitwidgets
 
-DEFINES += MAX_VERSION="1.1"
+DEFINES += MAX_VERSION="1.2"
 DEFINES += MIN_VERSION="0"
 
 TARGET = yainstall
