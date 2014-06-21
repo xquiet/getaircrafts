@@ -29,7 +29,7 @@
 #include "webservice.h"
 #include "xml2html.h"
 #include "Installer.h"
-#ifdef Q_OS_MACX
+#if defined Q_OS_MACX || defined Q_OS_WIN
 #include "yalib.h"
 #else
 #include "yalib/yalib.h"
