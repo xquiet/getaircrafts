@@ -76,11 +76,11 @@ file(GLOB JS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/js/*.js)
 
 QT5_WRAP_UI(UIS_HDRS ${YI_FORMS})
 
-qt5_add_resources(RC_ADDED ${YF_RESOURCES})
+qt5_add_resources(RC_ADDED ${YI_RESOURCES})
 
 qt5_add_translation( QM_FILES ${TS_FILES} )
 
-add_executable(yainstall ${YF_SOURCES} ${UIS_HDRS} ${RC_ADDED} ${QM_FILES})
+add_executable(yainstall ${YI_SOURCES} ${UIS_HDRS} ${RC_ADDED} ${QM_FILES})
 
 qt5_use_modules( yainstall Widgets LinguistTools Network WebKitWidgets)
 
