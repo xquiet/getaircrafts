@@ -11,6 +11,9 @@ cmake_minimum_required(VERSION 2.8.11)
 
 project(yainstall)
 
+set( CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" )
+message( STATUS ${CMAKE_MODULE_PATH} )
+
 # Debug, RelWithDebInfo, Release
 # set(CMAKE_BUILD_TYPE Debug)
 
@@ -29,6 +32,18 @@ find_package(Qt5Network REQUIRED)
 find_package(Qt5WebKitWidgets REQUIRED)
 # Find the Qt5LinguistTools library (libqt5help-devel)
 find_package(Qt5LinguistTools REQUIRED)
+
+find_package( ZLIB REQUIRED )
+find_package( LIBZIP REQUIRED )
+
+if( LIBZIP_FOUND )
+    # include zip.h
+    include_directories( ${LIBZIP_INCLUDE_DIR} )
+    # include zipconf.h
+    include_directories( ${LIBZIP_CONF_INCLUDE_DIR} )
+else( LIBZIP_FOUND )
+    message( FATAL_ERROR "LibZip not found" )
+endif( LIBZIP_FOUND )
 
 # The Qt5Widgets_INCLUDES also includes the include directories for
 # dependencies QtCore and QtGui
@@ -83,6 +98,8 @@ qt5_add_translation( QM_FILES ${TS_FILES} )
 add_executable(yainstall ${YI_SOURCES} ${UIS_HDRS} ${RC_ADDED} ${QM_FILES})
 
 qt5_use_modules( yainstall Widgets LinguistTools Network WebKitWidgets)
+
+target_link_libraries( yainstall ${LIBZIP_LIBRARY} )
 
 if(UNIX)
     # NOTE: using qt5_use_modules target_link_libraries can refer just to the other libraries
