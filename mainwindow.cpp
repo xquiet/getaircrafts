@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ws = new webservice();
 
     ui->cbofgversion->addItems(QStringList()
+                               << "v3.0"
+                               << "v2.12"
                                << "v2.10"
                                << "v2.8"
                                << "v2.6"
