@@ -24,7 +24,7 @@ bool Installer::uninstall(QString model)
     }
     else
     {
-        qDebug("The directory %s do not exists or you require more privileges\nTry running yaai as administrator",
+        qDebug("The directory %s do not exists or you require more privileges\nTry running yainstall as administrator",
                QString(destinationPath+model).toStdString().data());
     }
     return false;

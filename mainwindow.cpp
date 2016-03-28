@@ -156,7 +156,8 @@ void MainWindow::model_downloaded(QString path)
 {
     //QMessageBox msgBox(QMessageBox::Information,"Model stored",path,QMessageBox::Ok);
     //msgBox.exec();
-    Installer *install = new Installer("/usr/share/games/flightgear/Aircraft/",path);
+    Yalib *ya = new Yalib();
+    Installer *install = new Installer(ya->getRootPath()+"/Aircraft/",path);
     if(install->extract())
     {
         ui->lblStatus->setText(tr("Model downloaded and installed successfully"));
