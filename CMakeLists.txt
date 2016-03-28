@@ -34,7 +34,7 @@ find_package(Qt5WebKitWidgets REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 
 find_package( ZLIB REQUIRED )
-find_package( LIBZIP REQUIRED )
+find_package( LibZip REQUIRED )
 
 if( LIBZIP_FOUND )
     # include zip.h
