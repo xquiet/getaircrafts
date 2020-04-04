@@ -4,12 +4,20 @@
 #
 #-------------------------------------------------
 
+QMAKE_CXXFLAGS += -fPIC -std=gnu++0x
+
 QT       += core gui network
 lessThan(QT_MAJOR_VERSION, 5): QT += webkit
 greaterThan(QT_MAJOR_VERSION, 4): QT += webkitwidgets
 
-DEFINES += MAX_VERSION="1.2"
-DEFINES += MIN_VERSION="0"
+MAX_VERSION = 1
+MIN_VERSION = 3
+PATCH_VERSION = 0
+
+DEFINES += MAX_VERSION=$$MAX_VERSION
+DEFINES += MIN_VERSION=$$MIN_VERSION
+DEFINES += PATCH_VERSION=$$PATCH_VERSION
+DEFINES += STRVERSION=\\\"$${MAX_VERSION}.$${MIN_VERSION}.$${PATCH_VERSION}\\\"
 
 TARGET = yainstall
 TEMPLATE = app
@@ -22,15 +30,23 @@ macx {
     INCLUDEPATH += /opt/local/include /opt/local/lib/libzip/include
     LIBS += -L/opt/local/lib -lzip -lz
 }
+win32 {
+    CONFIG += windows
+    INCLUDEPATH += C:\Users\matteo\workspace\libzip\include
+    INCLUDEPATH += C:\Users\Matteo\workspace\libzip\lib\libzip\include
+    LIBS += -LC:\Users\matteo\workspace\libzip\lib -lz -lzip
+}
 
 # for development environment
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../yalib/release/ -lyalib
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../yalib/debug/ -lyalib
-else:mac: LIBS += -F$$PWD/../yalib/ -framework yalib
-else:unix: LIBS += -L$$PWD/../yalib/ -lyalib
+# libyalib for both release and debug as I'm building libyalib as RelWithDebInfo
 
-INCLUDEPATH += $$PWD/../yalib
-DEPENDPATH += $$PWD/../yalib
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../yalib-build/src/ -llibyalib
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../yalib-build/src/ -llibyalib
+else:mac: LIBS += -F$$PWD/../yalib-build/src/ -framework yalib
+else:unix: LIBS += -L$$PWD/../yalib-build/src/ -llibyalib
+
+INCLUDEPATH += $$PWD/../yalib/src
+DEPENDPATH += $$PWD/../yalib/src
 
 SOURCES += main.cpp\
         mainwindow.cpp \
