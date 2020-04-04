@@ -3,7 +3,7 @@
 webservice::webservice()
 {
     userAgent = "Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20100101 Firefox/17.0";
-    hostRef = "http://yaflight.altervista.org";
+    hostRef = "http://yaflight.grysol.com";
     // initializing
     currentDownload = NULL;
 }
