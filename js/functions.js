@@ -1,6 +1,6 @@
 /*
  * js functions for yapmanager
- * (C) 2013 by Matteo Pasotti
+ * (C) 2013 - 2020 by Matteo Pasotti <matteo.pasotti@gmail.com>
  */
 
 function showDialog(id){
