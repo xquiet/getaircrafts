@@ -3,6 +3,7 @@
 webservice::webservice()
 {
     userAgent = "Mozilla/5.0 (X11; Linux x86_64; rv:17.0) Gecko/20100101 Firefox/17.0";
+    // new ref http://mirrors.ibiblio.org/flightgear/ftp/Aircraft-trunk/catalog.xml
     hostRef = "http://yaflight.grysol.com";
     // initializing
     currentDownload = NULL;

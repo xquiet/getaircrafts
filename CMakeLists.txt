@@ -9,7 +9,7 @@ SET( VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}${GIT_SHA1_VERSI
 
 cmake_minimum_required(VERSION 2.8.11)
 
-project(yainstall)
+project(getaircrafts)
 
 set( CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" )
 message( STATUS ${CMAKE_MODULE_PATH} )
@@ -95,15 +95,15 @@ qt5_add_resources(RC_ADDED ${YI_RESOURCES})
 
 qt5_add_translation( QM_FILES ${TS_FILES} )
 
-add_executable(yainstall ${YI_SOURCES} ${UIS_HDRS} ${RC_ADDED} ${QM_FILES})
+add_executable(getaircrafts ${YI_SOURCES} ${UIS_HDRS} ${RC_ADDED} ${QM_FILES})
 
-qt5_use_modules( yainstall Widgets LinguistTools Network WebKitWidgets)
+qt5_use_modules( getaircrafts Widgets LinguistTools Network WebKitWidgets)
 
-target_link_libraries( yainstall ${LIBZIP_LIBRARY} )
+target_link_libraries( getaircrafts ${LIBZIP_LIBRARY} )
 
 if(UNIX)
     # NOTE: using qt5_use_modules target_link_libraries can refer just to the other libraries
-    # target_link_libraries(yainstall yalib Qt5::Widgets Qt5::Network Qt5::WebKitWidgets z)
+    # target_link_libraries(getaircrafts yalib Qt5::Widgets Qt5::Network Qt5::WebKitWidgets z)
     if(MACOSX)
         include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../yalib-build/src")
         message( STATUS "Including ${CMAKE_CURRENT_SOURCE_DIR}/../yalib-build/src" )
@@ -115,25 +115,25 @@ if(UNIX)
         )
         if(YALIB_LIBRARY)
             message(STATUS "Found YaLib library at: ${YALIB_LIBRARY}")
-            target_link_libraries(yainstall ${YALIB_LIBRARY} z)
+            target_link_libraries(getaircrafts ${YALIB_LIBRARY} z)
         else(YALIB_LIBRARY)
             message( STATUS "YaLib Not Found")
         endif(YALIB_LIBRARY)
     else(MACOSX)
-        target_link_libraries(yainstall yalib z)
+        target_link_libraries(getaircrafts yalib z)
     endif()
 elseif(WIN32)
     if(YALIB_LIBRARIES)
-        target_link_libraries(yainstall ${YALIB_LIBRARIES} z)
+        target_link_libraries(getaircrafts ${YALIB_LIBRARIES} z)
     else(YALIB_LIBRARIES)
         message( FATAL_ERROR "YaLib Not Found")
     endif(YALIB_LIBRARIES)
 endif()
 
 # setup version and soversion
-set_target_properties( yainstall PROPERTIES VERSION ${VERSION})
+set_target_properties( getaircrafts PROPERTIES VERSION ${VERSION})
 
-install( TARGETS yainstall DESTINATION bin )
-install( FILES ${QM_FILES} DESTINATION share/yainstall/languages )
-install( FILES ${CSS_FILES} DESTINATION share/yainstall/css )
-install( FILES ${JS_FILES} DESTINATION share/yainstall/js )
+install( TARGETS getaircrafts DESTINATION bin )
+install( FILES ${QM_FILES} DESTINATION share/getaircrafts/languages )
+install( FILES ${CSS_FILES} DESTINATION share/getaircrafts/css )
+install( FILES ${JS_FILES} DESTINATION share/getaircrafts/js )

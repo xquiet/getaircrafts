@@ -19,8 +19,10 @@ DEFINES += MIN_VERSION=$$MIN_VERSION
 DEFINES += PATCH_VERSION=$$PATCH_VERSION
 DEFINES += STRVERSION=\\\"$${MAX_VERSION}.$${MIN_VERSION}.$${PATCH_VERSION}\\\"
 
-TARGET = yainstall
+TARGET = getaircrafts
 TEMPLATE = app
+
+VERSION = $${MAX_VERSION}.$${MIN_VERSION}.$${PATCH_VERSION}
 
 unix:!macx {
     LIBS += -lzip -lz
@@ -32,9 +34,9 @@ macx {
 }
 win32 {
     CONFIG += windows
-    INCLUDEPATH += C:\Users\matteo\workspace\libzip\include
-    INCLUDEPATH += C:\Users\Matteo\workspace\libzip\lib\libzip\include
-    LIBS += -LC:\Users\matteo\workspace\libzip\lib -lz -lzip
+    INCLUDEPATH += C:\Users\Matteo\workspace\libzip-win-build\lib
+    INCLUDEPATH += C:\Users\Matteo\workspace\libzip-win-build\win32
+    LIBS += -LC:\Users\Matteo\workspace\libzip-win-build\build-VS2019\Release -lz -lzip
 }
 
 # for development environment
@@ -62,6 +64,6 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui
 
 RESOURCES += \
-    yainstall.qrc
+    getaircrafts.qrc
 
 INSTALLS += target
