@@ -1,5 +1,5 @@
-YaInstall
+GetAircrafts
 ==========
 
-Yet Another Aircraft Installer for FlightGear and YaFlight.
+FlightGear aircrafts model installer provided alongside YaFlight.
 
